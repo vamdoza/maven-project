@@ -14,7 +14,26 @@ pipeline {
     }
     stage('Test') {
       steps {
-        echo 'Hello from running Tests'
+        parallel(
+          "Test": {
+            echo 'Hello from running Tests'
+            
+          },
+          "Mac Test": {
+            echo 'Mac Test'
+            
+          },
+          "Windows Test": {
+            echo 'logging to the screen'
+            sh 'date > log.txt'
+            
+          }
+        )
+      }
+    }
+    stage('Deploy') {
+      steps {
+        writeFile(file: 'result.txt', text: 'the result of the deploy', encoding: 'utf-8')
       }
     }
   }
